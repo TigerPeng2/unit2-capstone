@@ -16,28 +16,20 @@ Run
 
 `python data/generate-data.py`
 
+## Running the CLI
+In order to run the tool, install and then run the project as a module
+
+`pip install -e .`
+`python -m multi_rag`
+
 TO-DO:
-- Generate artificial data
-    - Security policy
-    - Code review process
-    - Employee benefits and perks page
-    - Customer satisfaction guarantee
-    - Customer complaint process
-    - Customer success strategies
-    - Expense approval policy - when is manager approval needed (receipt value, expense time)
-- Quantitative
-    - Revenue by region (monthly)
-    - Costs by category by region (monthly)
-    - Sales records, generating random churn rate by decreasing the percentage chance that you pick an earlier record
-        - Customer id, timestamp, region, sales quantity
-    - Employee satisfaction polling (employee id, cost center, rating (0-10))
-    - Software ticketing - name, description, open timestamp, close timestamp
-    - Expense data - employee id, timestamp, expense amount, cost center
-- Basic CLI functionality - adding data sources, inputting a query, outputting a response
+- Read through config and add loader class for database info string interface
+    - CLI loads config -> loads data sources -> data sources provide data summary strings -> loaders provide data acess to respective agents
 - Routing qualitative and quantitative queries
-- Qualitative document rag (Chroma)
+- Qualitative document rag (Chroma) wtih source attribution
 - Quantitative queries - natural language to SQL translation
 - Multi-step queries and advanced orchestration - ReAct for task decomposition, query splitting and human-in-the-loop verification.
+- SQL Validation and Tokenomics
 
 myproject/  
 ├── pyproject.toml  
