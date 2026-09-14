@@ -16,54 +16,24 @@ Run
 
 `python data/generate-data.py`
 
+Also make sure to add the GEMINI_API_KEY to your .env in the project top level directory.
+
 ## Running the CLI
 In order to run the tool, install and then run the project as a module
 
 `pip install -e .`
-`python -m multi_rag`
 
-TO-DO:
-- Read through config and add loader class for database info string interface
-    - CLI loads config -> loads data sources -> data sources provide data summary strings -> loaders provide data acess to respective agents
-- Routing qualitative and quantitative queries
-- Qualitative document rag (Chroma) wtih source attribution
-- Quantitative queries - natural language to SQL translation
-- Multi-step queries and advanced orchestration - ReAct for task decomposition, query splitting and human-in-the-loop verification.
-- SQL Validation and Tokenomics
+`python -m multi_rag add-source`
+To add a source
 
-myproject/  
-├── pyproject.toml  
-├── README.md  
-├── config/  
-│   └── config.json  
-├── src/  
-│   └── multi_rag/  
-│       ├── __init__.py  
-│       ├── __main__.py  
-│       ├── cli.py  
-│       ├── config.py  
-│       │  
-│       ├── agents/  
-│       │   ├── __init__.py  
-│       │   ├── base.py  
-│       │   ├── qualitative.py  
-│       │   └── quantitative.py  
-│       │  
-│       ├── data/  
-│       │   ├── __init__.py  
-│       │   ├── loader.py  
-│       │   └── types.py  
-│       │  
-│       ├── models/  
-│       │   ├── __init__.py  
-│       │   ├── results.py  
-│       │   └── documents.py  
-│       │  
-│       ├── orchestrator.py  
-│       └── utils/  
-│           ├── __init__.py  
-│           └── logging.py  
-│  
-├── tests/  
-├── docs/  
-└── data/  
+`python -m multi_rag query`
+To run a query
+
+## Architecture
+The entire project is not functional, because I could not figure out how to get the SQL agent to follow instructions and request the table schema rather than making up column names. But the basic structure is as follows:
+
+The ManagerAgent is called when the query is input, and is instructed to break down the main query into a sequential set of sub-queries, directed at either the quantitative or qualitative agents.
+
+The respective agents are called, using a chroma collection and the sql database as their sources, respectively, and their answers are added to the message that's passed into the next subquery.
+
+At the end, the entire message log is passed into the ManagerAgent to provide the final answer.

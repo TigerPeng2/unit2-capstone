@@ -10,6 +10,8 @@ class Config():
     def __init__(self, input_json):
         self.sql_dbs = input_json.get("data_sources", {}).get("sql", [])
         self.doc_dirs = input_json.get("data_sources", {}).get("doc", [])
+        self.agent_model = input_json.get("agent_model", "gemini-3.5-flash-lite")
+        self.temperature = input_json.get("temperature", 0.3)
 
     def add_sql_db(self, path, name):
         """Add a new SQLite database to the config file, and write the names of the tables"""
@@ -75,7 +77,7 @@ class Config():
             print(f"  Documents: {', '.join(doc_dir['documents'])}")
 
 def load_config():
-    ## Load the config file and return a Config object
+    """Load the config file and return a Config object"""
     # If the config folder / file don't exist yet, create an empty config
     if not os.path.exists(CONFIG_PATH):
         os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)

@@ -1,17 +1,23 @@
 import argparse
 import json
 import os
-
 from multi_rag.config import load_config
+from multi_rag.agents.ManagerAgent import ManagerAgent
+from openai import OpenAI
+from dotenv import load_dotenv
 
 def cmd_query(args):
     """Run a query against the data sources defined in the config file."""
+    config = load_config()
+
+    load_dotenv()
+    api_key = os.getenv("GEMINI_API_KEY")
+    client = OpenAI(api_key=api_key, base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
+
+    manager = ManagerAgent(client, config)
     query = input("Enter your query: \n")
-    # Take this query and put it into the managerAgent, to
-    # 1. Decide whether quantiative or qualitative, feed the prompt to the appropriate agent, and return the answer.
-    # 2. Run a thought, action, observation loop, breaking down potentially into multiple sub-queries, each being routed
-    # then returning all of the outputted results (for transparency) and the final answer.
-    print("Query ran: \n" + query)
+    result = manager(query)
+    print(result)
 
 
 def cmd_list_sources(args):
